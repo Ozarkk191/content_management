@@ -12,6 +12,7 @@ enum HeaderMenuType {
 class HeaderMenu extends StatelessWidget {
   final String title;
   final String value;
+  final Color color;
   final HeaderMenuType headerMenuType;
 
   const HeaderMenu({
@@ -19,6 +20,7 @@ class HeaderMenu extends StatelessWidget {
     required this.title,
     required this.value,
     this.headerMenuType = HeaderMenuType.vertical,
+    this.color = fontColor,
   });
 
   @override
@@ -42,6 +44,7 @@ class HeaderMenu extends StatelessWidget {
 
   Column vertical() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         textBox(value),
         textBox(title),
@@ -51,6 +54,7 @@ class HeaderMenu extends StatelessWidget {
 
   Column verticalRevease() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         textBox(title),
         textBox(value),
@@ -82,7 +86,7 @@ class HeaderMenu extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: fontColor.withOpacity(0.9),
+        color: color,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),

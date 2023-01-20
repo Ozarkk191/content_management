@@ -173,10 +173,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 }
               },
             ),
-            // buttonMenu(
-            //   title: "กำหนดรูปแบบแสดงเนื้อหา",
-            //   onTap: () {},
-            // )
           ],
         ),
       );

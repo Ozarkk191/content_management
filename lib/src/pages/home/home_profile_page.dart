@@ -65,45 +65,24 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
                   totalContent: contentList.length,
                   user: user,
                   headerType: user.headerType ?? 0,
+                  createPost: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CreateContentPage(),
+                      ),
+                    );
+                  },
+                  editProfile: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EditProfilePage(),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    MainButton(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      height: 30,
-                      fontSize: 12,
-                      color: fontColor.withOpacity(0.9),
-                      borderRadius: 10,
-                      title: "เพิ่มเนื้อหา",
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CreateContentPage(),
-                          ),
-                        );
-                      },
-                    ),
-                    MainButton(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      height: 30,
-                      fontSize: 12,
-                      color: fontColor.withOpacity(0.9),
-                      borderRadius: 10,
-                      title: "แก้ไขโปรไฟล์",
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditProfilePage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
                 SizedBox(
                   height: 40,
                   child: Row(

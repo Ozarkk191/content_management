@@ -7,9 +7,11 @@ import '../../../utils/constant.dart';
 class MainAvatar extends StatelessWidget {
   final String? imageUrl;
   final double? radius;
+  final double? borderRadius;
   final double border;
   final File? file;
   final Function()? onTap;
+
   const MainAvatar({
     super.key,
     this.imageUrl,
@@ -17,6 +19,7 @@ class MainAvatar extends StatelessWidget {
     this.border = 3,
     this.onTap,
     this.file,
+    this.borderRadius,
   });
 
   @override
@@ -28,28 +31,27 @@ class MainAvatar extends StatelessWidget {
         height: radius != null ? (radius! * 2) : null,
         child: Stack(
           children: [
-            Container(
-              padding: EdgeInsets.all(border),
-              decoration: const BoxDecoration(
-                color: fontColor,
-                shape: BoxShape.circle,
-              ),
-              child: file != null
-                  ? CircleAvatar(
-                      backgroundImage: FileImage(file!),
-                      radius: radius,
-                    )
-                  : imageUrl != null
-                      ? CircleAvatar(
-                          backgroundImage: NetworkImage(imageUrl!),
-                          radius: radius,
-                        )
-                      : CircleAvatar(
-                          backgroundImage:
-                              const AssetImage("assets/icons/icon_app.png"),
-                          radius: radius,
-                        ),
-            ),
+            borderRadius != null
+                ? Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      border: Border.all(width: border, color: fontColor),
+                      borderRadius: BorderRadius.circular(borderRadius!),
+                    ),
+                    child: Column(
+                      children: [
+                        if (file != null) ...[
+                          Image.file(file!),
+                        ] else if (imageUrl != null) ...[
+                          Image.network(imageUrl!),
+                        ] else ...[
+                          Image.asset("assets/icons/icon_app.png"),
+                        ],
+                      ],
+                    ),
+                  )
+                : circle(),
             Align(
               alignment: Alignment.bottomRight,
               child: Visibility(
@@ -72,6 +74,31 @@ class MainAvatar extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Container circle() {
+    return Container(
+      padding: EdgeInsets.all(border),
+      decoration: const BoxDecoration(
+        color: fontColor,
+        shape: BoxShape.circle,
+      ),
+      child: file != null
+          ? CircleAvatar(
+              backgroundImage: FileImage(file!),
+              radius: radius,
+            )
+          : imageUrl != null
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(imageUrl!),
+                  radius: radius,
+                )
+              : CircleAvatar(
+                  backgroundImage:
+                      const AssetImage("assets/icons/icon_app.png"),
+                  radius: radius,
+                ),
     );
   }
 }

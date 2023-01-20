@@ -17,7 +17,7 @@ class HeaderType extends StatefulWidget {
 
 class _HeaderTypeState extends State<HeaderType> {
   int selectType = 0;
-  List<int> typeList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  List<int> typeList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
   @override
   void initState() {
@@ -46,6 +46,8 @@ class _HeaderTypeState extends State<HeaderType> {
                   totalContent: 999,
                   headerType: selectType,
                   user: user,
+                  createPost: () {},
+                  editProfile: () {},
                 ),
               ),
               const SizedBox(height: 10),

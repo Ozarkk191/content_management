@@ -94,6 +94,9 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                 totalContent: contentList.length,
                 user: user,
                 headerType: user.headerType ?? 0,
+                isOther: true,
+                createPost: () {},
+                editProfile: () {},
               ),
               const SizedBox(height: 10),
               SizedBox(
