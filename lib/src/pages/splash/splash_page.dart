@@ -1,7 +1,10 @@
+import 'package:ccm/utils/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_glow/flutter_glow.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/user_model.dart';
@@ -53,14 +56,53 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 80, 20, 20),
-        child: Center(
-          child: Image.asset(
-            "assets/icons/icon_app.png",
-          ),
-          //
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            Image.asset(
+              "assets/icons/ic_bg_content.gif",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.cover,
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  GlowText(
+                    "Custom Content",
+                    textAlign: TextAlign.center,
+                    glowColor: Colors.amber,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: "bufally",
+                      fontSize: 40,
+                    ),
+                  ),
+                  GlowText(
+                    "Management",
+                    textAlign: TextAlign.center,
+                    glowColor: Colors.amber,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: "bufally",
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
