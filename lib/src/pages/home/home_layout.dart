@@ -57,7 +57,12 @@ class _HomeLayoutState extends State<HomeLayout> {
             ),
             Container(
               height: 45,
-              color: Colors.white.withOpacity(0.5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey.shade300, width: 0.5),
+                ),
+              ),
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
