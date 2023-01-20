@@ -57,7 +57,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
       loading: loading,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(0),
           child: Column(
             children: [
               Container(
@@ -65,7 +65,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                 color: Colors.white.withOpacity(0.5),
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
@@ -74,12 +74,11 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                       },
                       child: const Icon(
                         Icons.arrow_back_ios_new_rounded,
-                        size: 20,
+                        size: 25,
                       ),
                     ),
-                    const SizedBox(width: 10),
                     Text(
-                      "Profile",
+                      "${user.fullName}",
                       style: TextStyle(
                         color: fontColor.withOpacity(0.9),
                         fontWeight: FontWeight.w900,
@@ -87,18 +86,32 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                         fontSize: 24,
                       ),
                     ),
+                    const SizedBox(width: 30)
                   ],
                 ),
               ),
-              HeaderProfile(
-                totalContent: contentList.length,
-                user: user,
-                headerType: user.headerType ?? 0,
-                isOther: true,
-                createPost: () {},
-                editProfile: () {},
+              Container(
+                height: 0.5,
+                color: Colors.grey.withOpacity(0.5),
               ),
               const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: HeaderProfile(
+                  totalContent: contentList.length,
+                  user: user,
+                  headerType: user.headerType ?? 0,
+                  isOther: true,
+                  createPost: () {},
+                  editProfile: () {},
+                ),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                height: 0.5,
+                color: Colors.grey.withOpacity(0.5),
+              ),
+              const SizedBox(height: 5),
               SizedBox(
                 height: 40,
                 child: Row(
@@ -120,6 +133,10 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                     ),
                   ],
                 ),
+              ),
+              Container(
+                height: 0.5,
+                color: Colors.grey.withOpacity(0.5),
               ),
               if (contentList.isEmpty) ...[
                 Column(

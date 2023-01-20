@@ -7,7 +7,6 @@ import '../../../bloc/user_bloc.dart';
 import '../../../models/content_model.dart';
 import '../../../models/user_model.dart';
 import '../../../utils/constant.dart';
-import '../../widgets/buttons/main_button.dart';
 import '../../widgets/cards/content_card.dart';
 import '../../widgets/header_type/header_profile.dart';
 import '../../widgets/layouts/main_layout.dart';
@@ -57,32 +56,40 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
         loading: loading,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(0),
             child: Column(
               children: [
                 const SizedBox(height: 45),
-                HeaderProfile(
-                  totalContent: contentList.length,
-                  user: user,
-                  headerType: user.headerType ?? 0,
-                  createPost: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CreateContentPage(),
-                      ),
-                    );
-                  },
-                  editProfile: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const EditProfilePage(),
-                      ),
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: HeaderProfile(
+                    totalContent: contentList.length,
+                    user: user,
+                    headerType: user.headerType ?? 0,
+                    createPost: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateContentPage(),
+                        ),
+                      );
+                    },
+                    editProfile: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditProfilePage(),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
+                Container(
+                  height: 0.5,
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+                const SizedBox(height: 5),
                 SizedBox(
                   height: 40,
                   child: Row(
@@ -104,6 +111,10 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
                       ),
                     ],
                   ),
+                ),
+                Container(
+                  height: 0.5,
+                  color: Colors.grey.withOpacity(0.5),
                 ),
                 if (contentList.isEmpty) ...[
                   Column(
