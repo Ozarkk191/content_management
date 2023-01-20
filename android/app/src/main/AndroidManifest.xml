@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ccm">
+    package="com.cm.content.app">
+     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="ccm"
+        android:label="Content Management"
         android:name="${applicationName}"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
