@@ -42,11 +42,26 @@ class MainAvatar extends StatelessWidget {
                     child: Column(
                       children: [
                         if (file != null) ...[
-                          Image.file(file!),
+                          Image.file(
+                            file!,
+                            fit: BoxFit.cover,
+                            width: radius != null ? (radius! * 2) : null,
+                            height: radius != null ? (radius! * 2) : null,
+                          ),
                         ] else if (imageUrl != null) ...[
-                          Image.network(imageUrl!),
+                          Image.network(
+                            imageUrl!,
+                            fit: BoxFit.cover,
+                            width: radius != null ? (radius! * 2) : null,
+                            height: radius != null ? (radius! * 2) : null,
+                          ),
                         ] else ...[
-                          Image.asset("assets/icons/icon_app.png"),
+                          Image.asset(
+                            "assets/icons/icon_app.png",
+                            fit: BoxFit.cover,
+                            width: radius != null ? (radius! * 2) : null,
+                            height: radius != null ? (radius! * 2) : null,
+                          ),
                         ],
                       ],
                     ),

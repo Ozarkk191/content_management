@@ -1,3 +1,4 @@
+import 'package:ccm/src/pages/user/user_list_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -168,6 +169,19 @@ class _HomeLayoutState extends State<HomeLayout> {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.people_alt_outlined),
+                title: const Text('รายชื่อผู้ใช้งาน'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserListPage(),
+                    ),
+                  );
+                },
+              ),
               ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text('Sing out'),

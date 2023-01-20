@@ -61,7 +61,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
           child: Column(
             children: [
               Container(
-                height: 45,
+                height: 55,
                 color: Colors.white.withOpacity(0.5),
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Row(
@@ -77,14 +77,26 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                         size: 25,
                       ),
                     ),
-                    Text(
-                      "${user.fullName}",
-                      style: TextStyle(
-                        color: fontColor.withOpacity(0.9),
-                        fontWeight: FontWeight.w900,
-                        fontFamily: "bufally",
-                        fontSize: 24,
-                      ),
+                    Column(
+                      children: [
+                        Text(
+                          "Profile",
+                          style: TextStyle(
+                            color: fontColor.withOpacity(0.9),
+                            fontWeight: FontWeight.w900,
+                            fontFamily: "bufally",
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          "${user.fullName}",
+                          style: TextStyle(
+                            color: fontColor.withOpacity(0.9),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(width: 30)
                   ],
