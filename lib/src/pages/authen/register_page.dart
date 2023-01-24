@@ -6,9 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/user_model.dart';
@@ -105,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
             .doc(credential.user!.uid)
             .set(user.toJson())
             .then((value) {
-          context.read<UserCubit>().setUser(user);
+          context.read<UserData>().setUser(user);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

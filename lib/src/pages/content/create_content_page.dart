@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/content_model.dart';
@@ -25,6 +25,7 @@ class _CreateContentPageState extends State<CreateContentPage> {
   TextEditingController contentText = TextEditingController();
   XFile? image;
   bool loading = false;
+  UserModel userModel = UserModel();
 
   void pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -47,7 +48,7 @@ class _CreateContentPageState extends State<CreateContentPage> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     final storage = FirebaseStorage.instance.ref();
     String? imageUrl;
-    String uid = context.read<UserCubit>().state.uid!;
+    String uid = userModel.uid!;
     DateTime now = DateTime.now();
     if (image != null) {
       final imageRef =
@@ -78,6 +79,13 @@ class _CreateContentPageState extends State<CreateContentPage> {
       );
       setState(() => loading = false);
     });
+  }
+
+  @override
+  void initState() {
+    userModel = Provider.of<UserData>(context, listen: false).user;
+
+    super.initState();
   }
 
   @override
@@ -139,113 +147,111 @@ class _CreateContentPageState extends State<CreateContentPage> {
             )
           ],
         ),
-        child: BlocBuilder<UserCubit, UserModel>(builder: (context, user) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MainAvatar(imageUrl: user.imageUrl, radius: 24),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MainAvatar(imageUrl: userModel.imageUrl, radius: 24),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userModel.fullName ?? "",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        MainButton(
+                          width: MediaQuery.of(context).size.width * 0.20,
+                          height: 25,
+                          fontSize: 10,
+                          color: fontColor.withOpacity(0.9),
+                          borderRadius: 10,
+                          title: "เพิ่มรูปภาพ",
+                          onTap: pickImage,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextField(
+                    controller: contentText,
+                    autofocus: true,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "เพิ่มคำอธิบายเกี่ยวกับสิ่งนี้",
+                    ),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                image != null
+                    ? Stack(
                         children: [
-                          Text(
-                            user.fullName ?? "",
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
+                          Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  blurRadius: 5,
+                                  spreadRadius: 10,
+                                  offset: const Offset(0, 3),
+                                )
+                              ],
+                            ),
+                            child: Image.file(
+                              File(
+                                image!.path,
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.contain,
                             ),
                           ),
-                          MainButton(
-                            width: MediaQuery.of(context).size.width * 0.20,
-                            height: 25,
-                            fontSize: 10,
-                            color: fontColor.withOpacity(0.9),
-                            borderRadius: 10,
-                            title: "เพิ่มรูปภาพ",
-                            onTap: pickImage,
-                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  image = null;
+                                });
+                              },
+                              child: Container(
+                                width: 25,
+                                height: 25,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color: Colors.black,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.close_rounded,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       )
-                    ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: TextField(
-                      controller: contentText,
-                      autofocus: true,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "เพิ่มคำอธิบายเกี่ยวกับสิ่งนี้",
-                      ),
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                    ),
-                  ),
-                  image != null
-                      ? Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.1),
-                                    blurRadius: 5,
-                                    spreadRadius: 10,
-                                    offset: const Offset(0, 3),
-                                  )
-                                ],
-                              ),
-                              child: Image.file(
-                                File(
-                                  image!.path,
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    image = null;
-                                  });
-                                },
-                                child: Container(
-                                  width: 25,
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 2,
-                                      color: Colors.black,
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.close_rounded,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      : const SizedBox(),
-                ],
-              ),
+                    : const SizedBox(),
+              ],
             ),
-          );
-        }),
+          ),
+        ),
       ),
     );
   }

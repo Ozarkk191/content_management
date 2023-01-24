@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/content_model.dart';
@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ContentModel> contentList = [];
+  UserModel userModel = UserModel();
 
   bool loading = true;
 
@@ -54,7 +55,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    userModel = Provider.of<UserData>(context, listen: false).user;
     getAllContent();
+
     super.initState();
   }
 
@@ -68,8 +71,7 @@ class _HomePageState extends State<HomePage> {
           return SingleCardContent(
             content: contentList[index],
             onTap: () {
-              if (contentList[index].uid ==
-                  context.read<UserCubit>().state.uid) {
+              if (contentList[index].uid == userModel.uid) {
                 widget.controller.jumpToPage(1);
               } else {
                 Navigator.push(

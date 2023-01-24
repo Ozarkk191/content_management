@@ -4,8 +4,8 @@ import 'package:ccm/src/pages/profile/profile_type/header_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/user_model.dart';
@@ -50,7 +50,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         .update(user.toJson())
         .then((value) {
       user.fullName = "${user.firstname} ${user.laststname}";
-      context.read<UserCubit>().setUser(user);
+      context.read<UserData>().setUser(user);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -61,122 +61,121 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   @override
+  void initState() {
+    userModel = Provider.of<UserData>(context, listen: false).user;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserModel>(builder: (context, user) {
-      if (isInit) {
-        userModel = user;
-        isInit = false;
-      }
-      return MainLayout(
-        loading: loading,
-        appBar: appbar(context),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Column(
-                  children: [
-                    MainAvatar(
-                      imageUrl: user.imageUrl,
-                      file: image != null ? File(image!.path) : null,
-                      radius: 30,
-                      onTap: pickImage,
+    return MainLayout(
+      loading: loading,
+      appBar: appbar(context),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Column(
+                children: [
+                  MainAvatar(
+                    imageUrl: userModel.imageUrl,
+                    file: image != null ? File(image!.path) : null,
+                    radius: 30,
+                    onTap: pickImage,
+                  ),
+                  const Text(
+                    "แก้ไขรูปภาพ",
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
                     ),
-                    const Text(
-                      "แก้ไขรูปภาพ",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-            line(),
-            menu(
-              title: "ชื่อ",
-              value: userModel.firstname ?? "เพิ่มชื่อ",
-              onTap: () async {
-                final name = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditSubPage(
-                      title: "ชื่อ",
-                      value: userModel.firstname ?? "",
-                    ),
+          ),
+          line(),
+          menu(
+            title: "ชื่อ",
+            value: userModel.firstname ?? "เพิ่มชื่อ",
+            onTap: () async {
+              final name = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditSubPage(
+                    title: "ชื่อ",
+                    value: userModel.firstname ?? "",
                   ),
-                );
-                if (name != null) {
-                  userModel.firstname = name;
-                  setState(() {});
-                }
-              },
-            ),
-            menu(
-              title: "นามสกุล",
-              value: userModel.laststname ?? "เพิ่มนามสกุล",
-              onTap: () async {
-                final laststname = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditSubPage(
-                      title: "นามสกุล",
-                      value: userModel.laststname ?? "",
-                    ),
+                ),
+              );
+              if (name != null) {
+                userModel.firstname = name;
+                setState(() {});
+              }
+            },
+          ),
+          menu(
+            title: "นามสกุล",
+            value: userModel.laststname ?? "เพิ่มนามสกุล",
+            onTap: () async {
+              final laststname = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditSubPage(
+                    title: "นามสกุล",
+                    value: userModel.laststname ?? "",
                   ),
-                );
-                if (laststname != null) {
-                  userModel.laststname = laststname;
-                  setState(() {});
-                }
-              },
-            ),
-            menu(
-              title: "คำอธิบายตัวตน",
-              value: userModel.bio ?? "เพิ่มคำอธิบาย",
-              underline: false,
-              onTap: () async {
-                final bio = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditSubPage(
-                      title: "คำอธิบายตัวตน",
-                      value: userModel.bio ?? "",
-                    ),
+                ),
+              );
+              if (laststname != null) {
+                userModel.laststname = laststname;
+                setState(() {});
+              }
+            },
+          ),
+          menu(
+            title: "คำอธิบายตัวตน",
+            value: userModel.bio ?? "เพิ่มคำอธิบาย",
+            underline: false,
+            onTap: () async {
+              final bio = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditSubPage(
+                    title: "คำอธิบายตัวตน",
+                    value: userModel.bio ?? "",
                   ),
-                );
-                if (bio != null) {
-                  userModel.bio = bio;
-                  setState(() {});
-                }
-              },
-            ),
-            line(),
-            buttonMenu(
-              title: "กำหนดรูปแบบโปรไฟล์",
-              total: userModel.headerType!,
-              onTap: () async {
-                final headerType = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        HeaderType(type: userModel.headerType!),
-                  ),
-                );
-                if (headerType != null) {
-                  userModel.headerType = headerType;
-                  log(headerType.toString());
-                  setState(() {});
-                }
-              },
-            ),
-          ],
-        ),
-      );
-    });
+                ),
+              );
+              if (bio != null) {
+                userModel.bio = bio;
+                setState(() {});
+              }
+            },
+          ),
+          line(),
+          buttonMenu(
+            title: "กำหนดรูปแบบโปรไฟล์",
+            total: userModel.headerType!,
+            onTap: () async {
+              final headerType = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HeaderType(type: userModel.headerType!),
+                ),
+              );
+              if (headerType != null) {
+                userModel.headerType = headerType;
+                log(headerType.toString());
+                setState(() {});
+              }
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   InkWell buttonMenu({

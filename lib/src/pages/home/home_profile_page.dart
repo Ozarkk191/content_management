@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/content_model.dart';
@@ -25,10 +25,13 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
   List<ContentModel> contentList = [];
   bool loading = true;
   int contentType = 0;
+  UserModel userModel = UserModel();
 
   @override
   void initState() {
+    userModel = Provider.of<UserData>(context, listen: false).user;
     getContent(context);
+
     super.initState();
   }
 
@@ -36,7 +39,7 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     await firestore
         .collection("User")
-        .doc(context.read<UserCubit>().state.uid)
+        .doc(userModel.uid)
         .collection("Content")
         .get()
         .then((value) {
@@ -51,98 +54,96 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserModel>(builder: (context, user) {
-      return MainLayout(
-        loading: loading,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: Column(
-              children: [
-                const SizedBox(height: 45),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: HeaderProfile(
-                    totalContent: contentList.length,
-                    user: user,
-                    headerType: user.headerType ?? 0,
-                    createPost: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CreateContentPage(),
-                        ),
-                      );
-                    },
-                    editProfile: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const EditProfilePage(),
-                        ),
-                      );
-                    },
-                  ),
+    return MainLayout(
+      loading: loading,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: Column(
+            children: [
+              const SizedBox(height: 45),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: HeaderProfile(
+                  totalContent: contentList.length,
+                  user: userModel,
+                  headerType: userModel.headerType ?? 0,
+                  createPost: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CreateContentPage(),
+                      ),
+                    );
+                  },
+                  editProfile: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EditProfilePage(),
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 5),
-                Container(
-                  height: 0.5,
-                  color: Colors.grey.withOpacity(0.5),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                height: 0.5,
+                color: Colors.grey.withOpacity(0.5),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                height: 40,
+                child: Row(
+                  children: [
+                    contentTypeMenu(
+                      index: 0,
+                      active: contentType == 0,
+                      icon: FontAwesomeIcons.tableCells,
+                    ),
+                    contentTypeMenu(
+                      index: 1,
+                      active: contentType == 1,
+                      icon: FontAwesomeIcons.list,
+                    ),
+                    contentTypeMenu(
+                      index: 2,
+                      active: contentType == 2,
+                      icon: FontAwesomeIcons.film,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 5),
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    children: [
-                      contentTypeMenu(
-                        index: 0,
-                        active: contentType == 0,
-                        icon: FontAwesomeIcons.tableCells,
-                      ),
-                      contentTypeMenu(
-                        index: 1,
-                        active: contentType == 1,
-                        icon: FontAwesomeIcons.list,
-                      ),
-                      contentTypeMenu(
-                        index: 2,
-                        active: contentType == 2,
-                        icon: FontAwesomeIcons.film,
-                      ),
-                    ],
-                  ),
+              ),
+              Container(
+                height: 0.5,
+                color: Colors.grey.withOpacity(0.5),
+              ),
+              if (contentList.isEmpty) ...[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                    ),
+                    Image.asset(
+                      "assets/icons/ic_no_data.jpg",
+                      width: 150,
+                    ),
+                    const Text("ยังไม่มีเนื้อหา"),
+                  ],
                 ),
-                Container(
-                  height: 0.5,
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-                if (contentList.isEmpty) ...[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.15,
-                      ),
-                      Image.asset(
-                        "assets/icons/ic_no_data.jpg",
-                        width: 150,
-                      ),
-                      const Text("ยังไม่มีเนื้อหา"),
-                    ],
-                  ),
-                ] else if (contentType == 0) ...[
-                  gridView(user),
-                ] else if (contentType == 1) ...[
-                  listView(user),
-                ] else if (contentType == 2) ...[
-                  cardView(user),
-                ]
-              ],
-            ),
+              ] else if (contentType == 0) ...[
+                gridView(userModel),
+              ] else if (contentType == 1) ...[
+                listView(userModel),
+              ] else if (contentType == 2) ...[
+                cardView(userModel),
+              ]
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   ListView cardView(UserModel user) {

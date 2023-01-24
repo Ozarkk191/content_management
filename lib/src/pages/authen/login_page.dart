@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/user_model.dart';
@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
           FirebaseFirestore firestore = FirebaseFirestore.instance;
           firestore.collection("User").doc(value.user!.uid).get().then((value) {
             UserModel user = UserModel.fromJson(value.data()!);
-            context.read<UserCubit>().setUser(user);
+            context.read<UserData>().setUser(user);
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(

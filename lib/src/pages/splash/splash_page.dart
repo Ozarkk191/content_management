@@ -1,10 +1,11 @@
-import 'package:ccm/utils/constant.dart';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_glow/flutter_glow.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bloc/user_bloc.dart';
 import '../../../models/user_model.dart';
@@ -36,7 +37,10 @@ class _SplashPageState extends State<SplashPage> {
           .then((value) {
         UserModel user = UserModel.fromJson(value.data()!);
 
-        context.read<UserCubit>().setUser(user);
+        // context.read<UserCubit>().setUser(user);
+        // log(user.toJson().toString());
+        context.read<UserData>().setUser(user);
+        // log(context.watch<UserModel>().toJson().toString());
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

@@ -3,12 +3,19 @@ import 'package:ccm/src/pages/splash/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<UserData>(create: (context) => UserData()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,20 +29,15 @@ class MyApp extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => UserCubit()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Custom Content manament',
-        theme: ThemeData(
-          fontFamily: "narrow",
-          // primaryColor: primaryColor,
-          // scaffoldBackgroundColor: primaryColor,
-        ),
-        home: const SplashPage(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Custom Content manament',
+      theme: ThemeData(
+        fontFamily: "narrow",
+        // primaryColor: primaryColor,
+        // scaffoldBackgroundColor: primaryColor,
       ),
+      home: const SplashPage(),
     );
   }
 }
