@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:ccm/src/pages/profile/profile_type/header_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,7 +15,11 @@ import '../home/home_layout.dart';
 import 'edit_sub_page.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({super.key});
+  final UserModel user;
+  const EditProfilePage({
+    super.key,
+    required this.user,
+  });
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -25,7 +28,9 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   bool isInit = true;
   bool loading = false;
-  UserModel userModel = UserModel();
+
+  UserModel userData = UserModel();
+
   XFile? image;
 
   void pickImage() async {
@@ -44,12 +49,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
       user.imageUrl =
           await storage.child("${user.uid}/profile.png").getDownloadURL();
     }
+    user.fullName = "${user.firstname} ${user.laststname}";
+    if (user.headerType != 9999) {
+      user.headerCustom = null;
+    }
     await firestore
         .collection("User")
         .doc(user.uid)
-        .update(user.toJson())
+        .update(user.toMap())
         .then((value) {
-      user.fullName = "${user.firstname} ${user.laststname}";
       context.read<UserData>().setUser(user);
       Navigator.pushReplacement(
         context,
@@ -62,7 +70,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void initState() {
-    userModel = Provider.of<UserData>(context, listen: false).user;
+    userData = widget.user;
     super.initState();
   }
 
@@ -79,7 +87,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: Column(
                 children: [
                   MainAvatar(
-                    imageUrl: userModel.imageUrl,
+                    imageUrl: userData.imageUrl,
                     file: image != null ? File(image!.path) : null,
                     radius: 30,
                     onTap: pickImage,
@@ -99,45 +107,45 @@ class _EditProfilePageState extends State<EditProfilePage> {
           line(),
           menu(
             title: "ชื่อ",
-            value: userModel.firstname ?? "เพิ่มชื่อ",
+            value: userData.firstname ?? "เพิ่มชื่อ",
             onTap: () async {
               final name = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => EditSubPage(
                     title: "ชื่อ",
-                    value: userModel.firstname ?? "",
+                    value: userData.firstname ?? "",
                   ),
                 ),
               );
               if (name != null) {
-                userModel.firstname = name;
+                userData.firstname = name;
                 setState(() {});
               }
             },
           ),
           menu(
             title: "นามสกุล",
-            value: userModel.laststname ?? "เพิ่มนามสกุล",
+            value: userData.laststname ?? "เพิ่มนามสกุล",
             onTap: () async {
               final laststname = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => EditSubPage(
                     title: "นามสกุล",
-                    value: userModel.laststname ?? "",
+                    value: userData.laststname ?? "",
                   ),
                 ),
               );
               if (laststname != null) {
-                userModel.laststname = laststname;
+                userData.laststname = laststname;
                 setState(() {});
               }
             },
           ),
           menu(
             title: "คำอธิบายตัวตน",
-            value: userModel.bio ?? "เพิ่มคำอธิบาย",
+            value: userData.bio ?? "เพิ่มคำอธิบาย",
             underline: false,
             onTap: () async {
               final bio = await Navigator.push(
@@ -145,32 +153,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 MaterialPageRoute(
                   builder: (context) => EditSubPage(
                     title: "คำอธิบายตัวตน",
-                    value: userModel.bio ?? "",
+                    value: userData.bio ?? "",
                   ),
                 ),
               );
               if (bio != null) {
-                userModel.bio = bio;
-                setState(() {});
+                setState(() {
+                  userData.bio = bio;
+                });
               }
             },
           ),
           line(),
           buttonMenu(
             title: "กำหนดรูปแบบโปรไฟล์",
-            total: userModel.headerType!,
+            total: userData.headerType!,
             onTap: () async {
-              final headerType = await Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HeaderType(type: userModel.headerType!),
+                  builder: (context) => HeaderType(user: userData),
                 ),
               );
-              if (headerType != null) {
-                userModel.headerType = headerType;
-                log(headerType.toString());
-                setState(() {});
-              }
             },
           ),
         ],
@@ -202,7 +206,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   Text(title),
                   Row(
                     children: [
-                      Text("รูปแบบที่ $total"),
+                      total == 9999
+                          ? const Text("รูปแบบกำหนดเอง")
+                          : Text("รูปแบบที่ $total"),
                       const Icon(
                         Icons.arrow_forward_ios_rounded,
                         size: 15,
@@ -309,7 +315,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       actions: [
         InkWell(
-          onTap: () => userUpdate(context, userModel),
+          onTap: () => userUpdate(context, userData),
           child: const Padding(
             padding: EdgeInsets.only(right: 8),
             child: Center(

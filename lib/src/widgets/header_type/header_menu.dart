@@ -86,10 +86,11 @@ class HeaderMenu extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: color,
-        fontWeight: FontWeight.w600,
-        fontSize: 16,
-      ),
+          color: color,
+          fontFamily: "narrow",
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          decoration: TextDecoration.none),
     );
   }
 }

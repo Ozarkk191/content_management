@@ -11,14 +11,13 @@ class HeaderProfile extends StatelessWidget {
   final int totalContent;
   final int headerType;
   final bool isOther;
-  final Function() createPost;
+
   final Function() editProfile;
   const HeaderProfile({
     super.key,
     required this.user,
     required this.totalContent,
     this.headerType = 0,
-    required this.createPost,
     required this.editProfile,
     this.isOther = false,
   });
@@ -111,20 +110,11 @@ class HeaderProfile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  MainButton(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    height: 30,
-                    fontSize: 12,
-                    color: fontColor.withOpacity(0.9),
-                    borderRadius: 10,
-                    title: "เพิ่มเนื้อหา",
-                    onTap: createPost,
-                  ),
                   const SizedBox(width: 10),
                   MainButton(
-                    width: MediaQuery.of(context).size.width * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     height: 30,
-                    fontSize: 12,
+                    fontSize: 10,
                     color: fontColor.withOpacity(0.9),
                     borderRadius: 10,
                     title: "แก้ไขโปรไฟล์",
@@ -168,23 +158,13 @@ class HeaderProfile extends StatelessWidget {
             ),
             Visibility(
               visible: !isOther,
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   MainButton(
                     width: MediaQuery.of(context).size.width * 0.2,
-                    height: 30,
-                    fontSize: 10,
-                    color: fontColor.withOpacity(0.9),
-                    borderRadius: 10,
-                    title: "เพิ่มเนื้อหา",
-                    onTap: createPost,
-                  ),
-                  const SizedBox(width: 5),
-                  MainButton(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: 30,
-                    fontSize: 10,
+                    height: 25,
+                    fontSize: 9,
                     color: fontColor.withOpacity(0.9),
                     borderRadius: 10,
                     title: "แก้ไขโปรไฟล์",
@@ -277,15 +257,6 @@ class HeaderProfile extends StatelessWidget {
                 fontSize: 10,
                 color: fontColor.withOpacity(0.9),
                 borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 30,
-                fontSize: 10,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
                 title: "แก้ไขโปรไฟล์",
                 onTap: editProfile,
               ),
@@ -344,15 +315,6 @@ class HeaderProfile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 30,
-                fontSize: 10,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
               MainButton(
                 width: MediaQuery.of(context).size.width * 0.40,
                 height: 30,
@@ -423,15 +385,6 @@ class HeaderProfile extends StatelessWidget {
                 fontSize: 10,
                 color: fontColor.withOpacity(0.9),
                 borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 30,
-                fontSize: 10,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
                 title: "แก้ไขโปรไฟล์",
                 onTap: editProfile,
               ),
@@ -488,15 +441,6 @@ class HeaderProfile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  MainButton(
-                    width: MediaQuery.of(context).size.width * 0.40,
-                    height: 30,
-                    fontSize: 10,
-                    color: fontColor.withOpacity(0.9),
-                    borderRadius: 10,
-                    title: "เพิ่มเนื้อหา",
-                    onTap: createPost,
-                  ),
                   MainButton(
                     width: MediaQuery.of(context).size.width * 0.40,
                     height: 30,
@@ -588,15 +532,6 @@ class HeaderProfile extends StatelessWidget {
                 fontSize: 10,
                 color: fontColor.withOpacity(0.9),
                 borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 30,
-                fontSize: 10,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
                 title: "แก้ไขโปรไฟล์",
                 onTap: editProfile,
               ),
@@ -655,15 +590,6 @@ class HeaderProfile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: 30,
-                fontSize: 10,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
               MainButton(
                 width: MediaQuery.of(context).size.width * 0.40,
                 height: 30,
@@ -751,19 +677,10 @@ class HeaderProfile extends StatelessWidget {
                     Visibility(
                       visible: !isOther,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           MainButton(
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            height: 30,
-                            fontSize: 10,
-                            color: fontColor.withOpacity(0.9),
-                            borderRadius: 10,
-                            title: "เพิ่มเนื้อหา",
-                            onTap: createPost,
-                          ),
-                          MainButton(
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.25,
                             height: 30,
                             fontSize: 10,
                             color: fontColor.withOpacity(0.9),
@@ -786,11 +703,11 @@ class HeaderProfile extends StatelessWidget {
 
   Widget type9(context) {
     return SizedBox(
-      height: 150,
+      height: 160,
       child: Column(
         children: [
           Container(
-            height: 75,
+            height: 80,
             padding: const EdgeInsets.fromLTRB(0, 15, 0, 10),
             decoration: const BoxDecoration(
               color: Colors.black,
@@ -851,22 +768,12 @@ class HeaderProfile extends StatelessWidget {
                 ),
                 Visibility(
                   visible: !isOther,
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       MainButton(
                         width: MediaQuery.of(context).size.width * 0.2,
-                        height: 30,
-                        fontSize: 10,
-                        color: fontColor.withOpacity(0.9),
-                        borderRadius: 10,
-                        title: "เพิ่มเนื้อหา",
-                        onTap: createPost,
-                      ),
-                      const SizedBox(width: 5),
-                      MainButton(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: 30,
+                        height: 25,
                         fontSize: 10,
                         color: fontColor.withOpacity(0.9),
                         borderRadius: 10,
@@ -936,18 +843,9 @@ class HeaderProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
+                width: MediaQuery.of(context).size.width * 0.4,
                 height: 30,
-                fontSize: 12,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
-                height: 30,
-                fontSize: 12,
+                fontSize: 10,
                 color: fontColor.withOpacity(0.9),
                 borderRadius: 10,
                 title: "แก้ไขโปรไฟล์",
@@ -1012,18 +910,9 @@ class HeaderProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
+                width: MediaQuery.of(context).size.width * 0.4,
                 height: 30,
-                fontSize: 12,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
-                height: 30,
-                fontSize: 12,
+                fontSize: 10,
                 color: fontColor.withOpacity(0.9),
                 borderRadius: 10,
                 title: "แก้ไขโปรไฟล์",
@@ -1088,18 +977,9 @@ class HeaderProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
+                width: MediaQuery.of(context).size.width * 0.4,
                 height: 30,
-                fontSize: 12,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
-                height: 30,
-                fontSize: 12,
+                fontSize: 10,
                 color: fontColor.withOpacity(0.9),
                 borderRadius: 10,
                 title: "แก้ไขโปรไฟล์",
@@ -1164,18 +1044,9 @@ class HeaderProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
+                width: MediaQuery.of(context).size.width * 0.4,
                 height: 30,
-                fontSize: 12,
-                color: fontColor.withOpacity(0.9),
-                borderRadius: 10,
-                title: "เพิ่มเนื้อหา",
-                onTap: createPost,
-              ),
-              MainButton(
-                width: MediaQuery.of(context).size.width * 0.42,
-                height: 30,
-                fontSize: 12,
+                fontSize: 10,
                 color: fontColor.withOpacity(0.9),
                 borderRadius: 10,
                 title: "แก้ไขโปรไฟล์",

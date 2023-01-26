@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../utils/constant.dart';
 
 class MainButton extends StatelessWidget {
-  final Function() onTap;
+  final Function()? onTap;
   final String title;
   final bool outlined;
   final Color color;
@@ -14,7 +14,7 @@ class MainButton extends StatelessWidget {
   final double fontSize;
   const MainButton({
     super.key,
-    required this.onTap,
+    this.onTap,
     this.title = "",
     this.outlined = false,
     this.color = primaryColor,

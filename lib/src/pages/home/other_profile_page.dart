@@ -1,3 +1,4 @@
+import 'package:ccm/src/widgets/header_type/header_custom.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,6 +23,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   List<ContentModel> contentList = [];
   bool loading = true;
   UserModel user = UserModel();
+  int contentType = 0;
 
   @override
   void initState() {
@@ -109,14 +111,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: HeaderProfile(
-                  totalContent: contentList.length,
-                  user: user,
-                  headerType: user.headerType ?? 0,
-                  isOther: true,
-                  createPost: () {},
-                  editProfile: () {},
-                ),
+                child: user.headerType == 9999 && user.headerCustom != null
+                    ? HeaderCustom(
+                        user: user,
+                        totalPost: contentList.length,
+                      )
+                    : HeaderProfile(
+                        totalContent: contentList.length,
+                        user: user,
+                        headerType: user.headerType ?? 0,
+                        isOther: true,
+                        editProfile: () {},
+                      ),
               ),
               const SizedBox(height: 5),
               Container(
@@ -130,17 +136,17 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                   children: [
                     contentTypeMenu(
                       index: 0,
-                      active: user.contentType == 0,
+                      active: contentType == 0,
                       icon: FontAwesomeIcons.tableCells,
                     ),
                     contentTypeMenu(
                       index: 1,
-                      active: user.contentType == 1,
+                      active: contentType == 1,
                       icon: FontAwesomeIcons.list,
                     ),
                     contentTypeMenu(
                       index: 2,
-                      active: user.contentType == 2,
+                      active: contentType == 2,
                       icon: FontAwesomeIcons.film,
                     ),
                   ],
@@ -164,11 +170,11 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                     const Text("ยังไม่มีเนื้อหา"),
                   ],
                 ),
-              ] else if (user.contentType == 0) ...[
+              ] else if (contentType == 0) ...[
                 gridView(user),
-              ] else if (user.contentType == 1) ...[
+              ] else if (contentType == 1) ...[
                 listView(user),
-              ] else if (user.contentType == 2) ...[
+              ] else if (contentType == 2) ...[
                 cardView(user),
               ]
             ],
@@ -317,7 +323,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
       child: InkWell(
         onTap: () {
           setState(() {
-            user.contentType = index;
+            contentType = index;
           });
         },
         child: Column(

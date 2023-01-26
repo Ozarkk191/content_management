@@ -132,7 +132,6 @@ class _UserListPageState extends State<UserListPage> {
                       user: userList[index],
                       headerType: 6,
                       isOther: true,
-                      createPost: () {},
                       editProfile: () {},
                     ),
                   ),

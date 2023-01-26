@@ -27,8 +27,8 @@ class MainAvatar extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: SizedBox(
-        width: radius != null ? (radius! * 2) : null,
-        height: radius != null ? (radius! * 2) : null,
+        width: radius != null ? ((radius! + border) * 2) : null,
+        height: radius != null ? ((radius! + border) * 2) : null,
         child: Stack(
           children: [
             borderRadius != null

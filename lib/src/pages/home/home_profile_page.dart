@@ -8,6 +8,7 @@ import '../../../models/content_model.dart';
 import '../../../models/user_model.dart';
 import '../../../utils/constant.dart';
 import '../../widgets/cards/content_card.dart';
+import '../../widgets/header_type/header_custom.dart';
 import '../../widgets/header_type/header_profile.dart';
 import '../../widgets/layouts/main_layout.dart';
 import '../content/create_content_page.dart';
@@ -30,6 +31,7 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
   @override
   void initState() {
     userModel = Provider.of<UserData>(context, listen: false).user;
+    // log("home p =>>${userModel.toJson()}");
     getContent(context);
 
     super.initState();
@@ -56,6 +58,21 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
   Widget build(BuildContext context) {
     return MainLayout(
       loading: loading,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreateContentPage(),
+            ),
+          );
+        },
+        backgroundColor: primaryColor,
+        child: const Icon(
+          FontAwesomeIcons.pencil,
+          size: 20,
+        ),
+      ),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(0),
@@ -64,27 +81,37 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
               const SizedBox(height: 45),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: HeaderProfile(
-                  totalContent: contentList.length,
-                  user: userModel,
-                  headerType: userModel.headerType ?? 0,
-                  createPost: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CreateContentPage(),
+                child: userModel.headerType == 9999 &&
+                        userModel.headerCustom != null
+                    ? HeaderCustom(
+                        user: userModel,
+                        totalPost: contentList.length,
+                        onEdit: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfilePage(
+                                user: userModel,
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : HeaderProfile(
+                        totalContent: contentList.length,
+                        user: userModel,
+                        headerType: userModel.headerType ?? 0,
+                        editProfile: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfilePage(
+                                user: userModel,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                  editProfile: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const EditProfilePage(),
-                      ),
-                    );
-                  },
-                ),
               ),
               const SizedBox(height: 5),
               Container(

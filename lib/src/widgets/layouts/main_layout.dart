@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 class MainLayout extends StatelessWidget {
   final Widget child;
   final Widget? appBar;
+  final Widget? floatingActionButton;
+
   final bool loading;
   const MainLayout({
     super.key,
     required this.child,
     this.loading = false,
     this.appBar,
+    this.floatingActionButton,
   });
 
   @override
@@ -24,6 +27,7 @@ class MainLayout extends StatelessWidget {
           body: SafeArea(
             child: child,
           ),
+          floatingActionButton: floatingActionButton,
         ),
         Visibility(
           visible: loading,

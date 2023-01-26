@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'drag_target_item_model.dart';
+
 class UserModel {
   String? email;
   String? firstname;
@@ -7,7 +11,7 @@ class UserModel {
   String? bio;
   String? uid;
   int? headerType;
-  int? contentType;
+  DragTargetItemModel? headerCustom;
 
   UserModel({
     this.email,
@@ -17,8 +21,8 @@ class UserModel {
     this.imageUrl,
     this.bio,
     this.uid,
-    this.contentType = 0,
     this.headerType = 0,
+    this.headerCustom,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -29,9 +33,37 @@ class UserModel {
     imageUrl = json['image_url'];
     bio = json['bio'];
     uid = json['uid'];
-    contentType = json['content_type'];
     headerType = json['header_type'];
+    headerCustom = json['header_custom'] != null
+        ? DragTargetItemModel.fromJson(json['header_custom'])
+        : null;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'firstname': firstname,
+      'laststname': laststname,
+      'full_name': fullName,
+      'image_url': imageUrl,
+      'bio': bio,
+      'uid': uid,
+      'header_type': headerType,
+      'header_custom': headerCustom?.toMap(),
+    };
+  }
+
+  UserModel.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
+      : email = doc.data()?["email"],
+        firstname = doc.data()?["firstname"],
+        laststname = doc.data()?["laststname"],
+        fullName = doc.data()?["full_name"],
+        imageUrl = doc.data()?["image_url"],
+        bio = doc.data()?["bio"],
+        uid = doc.data()?["uid"],
+        headerType = doc.data()?["header_type"],
+        headerCustom =
+            DragTargetItemModel.fromJson(doc.data()?["header_custom"]);
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -42,8 +74,8 @@ class UserModel {
     data['image_url'] = imageUrl;
     data['bio'] = bio;
     data['uid'] = uid;
-    data['content_type'] = contentType;
     data['header_type'] = headerType;
+    data['header_custom'] = headerCustom;
     return data;
   }
 }
