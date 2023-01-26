@@ -25,25 +25,34 @@ class HeaderCustom extends StatelessWidget {
           height: 160,
           child: Stack(
             children: [
-              Align(
-                alignment: setAlign(
-                    alignment: user.headerCustom!.profile!.position ?? ""),
-                child: avatarBox(
-                  borderRadius: user.headerCustom!.profile!.borderRadius,
-                  size: user.headerCustom!.profile!.size!,
-                  imageUrl: user.imageUrl,
-                ),
-              ),
-              Align(
-                alignment: setAlign(
-                    alignment: user.headerCustom!.name!.position ?? ""),
-                child: nameBoxCheck(),
-              ),
-              Align(
-                alignment: setAlign(
-                    alignment: user.headerCustom!.status!.position ?? ""),
-                child: statusBoxCheck(context),
-              )
+              user.headerCustom!.profile != null
+                  ? Align(
+                      alignment: setAlign(
+                        alignment: user.headerCustom!.profile!.position ?? "",
+                      ),
+                      child: avatarBox(
+                        borderRadius: user.headerCustom!.profile!.borderRadius,
+                        size: user.headerCustom!.profile!.size!,
+                        imageUrl: user.imageUrl,
+                      ),
+                    )
+                  : const SizedBox(),
+              user.headerCustom!.name != null
+                  ? Align(
+                      alignment: setAlign(
+                        alignment: user.headerCustom!.name!.position ?? "",
+                      ),
+                      child: nameBoxCheck(),
+                    )
+                  : const SizedBox(),
+              user.headerCustom!.status != null
+                  ? Align(
+                      alignment: setAlign(
+                        alignment: user.headerCustom!.status!.position ?? "",
+                      ),
+                      child: statusBoxCheck(context),
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),
