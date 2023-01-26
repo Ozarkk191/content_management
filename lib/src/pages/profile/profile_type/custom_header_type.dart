@@ -5,6 +5,7 @@ import 'package:ccm/src/pages/profile/profile_type/header_type.dart';
 import 'package:ccm/src/widgets/layouts/main_layout.dart';
 import 'package:ccm/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../widgets/header_type/header_menu.dart';
 
@@ -88,17 +89,28 @@ class _CustomHeaderTypeState extends State<CustomHeaderType> {
         data.status = dataList[i].status;
       }
     }
-    userData.headerType = 9999;
-    userData.headerCustom = data;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HeaderType(
-          user: userData,
-          oldType: widget.oldType,
+    if (data.profile != null || data.name != null || data.status != null) {
+      userData.headerType = 9999;
+      userData.headerCustom = data;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HeaderType(
+            user: userData,
+            oldType: widget.oldType,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "วิทเจ็ทของคุณยังไม่ครบ\nกรุณาใส่วิทเจ็ทให้เรียบร้อย",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red.shade400,
+        textColor: Colors.white,
+      );
+    }
   }
 
   @override
